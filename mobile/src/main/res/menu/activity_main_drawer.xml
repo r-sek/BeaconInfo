@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_action_location_2"
+            android:title="@string/near" />
+
+        <item
+            android:id="@+id/nav_temple_shrine"
+            android:icon="@drawable/torii"
+            android:title="@string/temple_shrine"/>
+        <item
+            android:id="@+id/nav_buddha"
+            android:icon="@drawable/daibutsu"
+            android:title="@string/buddha"/>
+        <item
+            android:id="@+id/nav_historical_interest_site"
+            android:icon="@drawable/ikusa"
+            android:title="@string/historical_interest_site"/>
+        <item
+            android:id="@+id/nav_beach"
+            android:icon="@drawable/beach"
+            android:title="@string/beach"/>
+
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/ic_action_foursquare"
+            android:title="@string/log" />
+    </group>
+
+</menu>

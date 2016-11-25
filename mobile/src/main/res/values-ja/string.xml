@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BeaconInfo</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="map">マップ</string>
+    <string name="near">近くのスポット</string>
+    <string name="log">履歴</string>
+
+    <string name="near_title">近くのスポット</string>
+    <string name="def_card_main">メイン</string>
+    <string name="def_card_sub">寺・神社・仏像</string>
+
+    <string name="temple_shrine">寺院/神社</string>
+    <string name="buddha">仏像</string>
+    <string name="historical_interest_site">史跡/名所</string>
+    <string name="beach">海水浴場</string>
+
+    <string name="item_title">ソート名</string>
+
+
+    <string name="visit">この場所へ行く</string>
+
+
+    <string name="action_settings">設定</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

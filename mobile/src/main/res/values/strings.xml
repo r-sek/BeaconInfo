@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">BeaconInfo</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="map">Map</string>
+    <string name="near">Near</string>
+    <string name="log">Log</string>
+
+    <string name="near_title">NearSpots</string>
+    <string name="def_card_main">Main</string>
+    <string name="def_card_sub">Temple・Shrine・Buddha</string>
+
+    <string name="temple_shrine">Temple/Shrine</string>
+    <string name="buddha">Buddha</string>
+    <string name="historical_interest_site">Historical/Interest</string>
+    <string name="beach">Beach</string>
+
+    <string name="item_title">SortItemName</string>
+
+    <string name="visit">Go to this place</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
