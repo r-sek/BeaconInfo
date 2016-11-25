@@ -19,7 +19,7 @@ import android.widget.ListView;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,MapFragment.OnFragmentInteractionListener,InfoFragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener,InfoFragment.OnFragmentInteractionListener{
 
     ListView lv;
 
@@ -85,12 +85,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        if (id == R.id.nav_gallery) {
-            fragmentManager.beginTransaction().replace(R.id.container,MapFragment.newInstance("hoge","hoge")).commit();
-        } else if (id == R.id.nav_camera) {
+        if (id == R.id.nav_camera) {
             fragmentManager.beginTransaction().replace(R.id.container,NearSpotFragment.newInstance("hoge","hoge")).commit();
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_temple_shrine) {
+            fragmentManager.beginTransaction().replace(R.id.container,ItemFragment.newInstance("hoge","hoge")).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

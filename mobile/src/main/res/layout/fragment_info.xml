@@ -1,54 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="info.redspirit.beaconinfo.InfoFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/mainImage"
+        android:layout_height="240dp"
+        android:id="@+id/imageView6"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/spotName"
-        android:src="@drawable/testimgf" />
+        android:src="@drawable/testimgf"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/spotName"
-        android:layout_centerVertical="true"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/imageView6"
         android:layout_alignParentStart="true" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
-        android:layout_below="@+id/spotName"
-        android:layout_alignParentStart="true" >
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/spotInfo" />
-        </LinearLayout>
-    </ScrollView>
-
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/visit"
+        android:text="New Text"
+        android:id="@+id/textView6"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/vistiBtn" />
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView7"
+        android:layout_above="@+id/button"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView8"
+        android:layout_above="@+id/textView7"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
