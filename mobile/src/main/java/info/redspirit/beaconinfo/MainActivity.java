@@ -19,7 +19,7 @@ import android.widget.ListView;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,InfoFragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener,InfoFragment.OnFragmentInteractionListener,ItemFragment.OnFragmentInteractionListener{
 
     ListView lv;
 
