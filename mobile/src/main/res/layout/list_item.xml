@@ -7,17 +7,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listImage"
+        android:src="@drawable/ic_action_foursquare"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:src="@drawable/ic_action_foursquare" />
+        android:layout_alignBottom="@+id/textView9" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/textView4"
-        android:layout_alignBottom="@+id/listImage"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/listImage" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
         android:layout_toEndOf="@+id/listImage"
-        android:layout_marginBottom="12dp" />
+        android:id="@+id/textView9" />
 </RelativeLayout>
