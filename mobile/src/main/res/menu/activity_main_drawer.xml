@@ -3,7 +3,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_near"
             android:icon="@drawable/ic_action_location_2"
             android:title="@string/near" />
 
@@ -25,7 +25,7 @@
             android:title="@string/beach"/>
 
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_history"
             android:icon="@drawable/ic_action_foursquare"
             android:title="@string/log" />
     </group>

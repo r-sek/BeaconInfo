@@ -19,7 +19,7 @@ import android.widget.ListView;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,InfoFragment.OnFragmentInteractionListener,ItemFragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnFragmentInteractionListener {
 
     ListView lv;
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        lv = (ListView)findViewById(R.id.listView);
+        lv = (ListView) findViewById(R.id.listView);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void onFragmentInteraction(Uri uri){
+    public void onFragmentInteraction(Uri uri) {
 
     }
 
@@ -85,10 +85,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        if (id == R.id.nav_camera) {
-            fragmentManager.beginTransaction().replace(R.id.container,NearSpotFragment.newInstance("hoge","hoge")).commit();
+        if (id == R.id.nav_near) {
+            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
         } else if (id == R.id.nav_temple_shrine) {
-            fragmentManager.beginTransaction().replace(R.id.container,ItemFragment.newInstance("hoge","hoge")).commit();
+            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+        } else if (id == R.id.nav_buddha) {
+            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+        } else if (id == R.id.nav_historical_interest_site) {
+            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+        } else if (id == R.id.nav_beach) {
+            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+        } else if (id == R.id.nav_history) {
+            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
