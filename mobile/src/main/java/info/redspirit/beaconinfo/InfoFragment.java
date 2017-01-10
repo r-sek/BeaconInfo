@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 
@@ -33,6 +34,9 @@ public class InfoFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private View v;
+    Button bt;
 
     public InfoFragment() {
         // Required empty public constructor
@@ -69,12 +73,19 @@ public class InfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_info, container, false);
+        v = inflater.inflate(R.layout.fragment_info, container, false);
 
-        ImageView imageView = (ImageView)rootView.findViewById(R.id.mainImage);
+        ImageView imageView = (ImageView)v.findViewById(R.id.mainImage);
         imageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(),R.drawable.sampleimg,330,220));
 
-        return rootView;
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        bt = (Button)v.findViewById(R.id.gobutton);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
