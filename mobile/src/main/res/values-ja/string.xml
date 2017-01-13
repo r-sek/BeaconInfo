@@ -10,8 +10,8 @@
     <string name="log">履歴</string>
 
     <string name="near_title">近くのスポット</string>
-    <string name="def_card_main">メイン</string>
-    <string name="def_card_sub">寺・神社・仏像</string>
+    <string name="def_card_main">スポット名</string>
+    <string name="def_card_sub">カテゴリ</string>
 
     <string name="temple_shrine">寺院/神社</string>
     <string name="buddha">仏像</string>

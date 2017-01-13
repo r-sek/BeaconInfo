@@ -9,8 +9,8 @@
     <string name="log">Log</string>
 
     <string name="near_title">NearSpots</string>
-    <string name="def_card_main">Main</string>
-    <string name="def_card_sub">Temple・Shrine・Buddha</string>
+    <string name="def_card_main">SpotName</string>
+    <string name="def_card_sub">Category</string>
 
     <string name="temple_shrine">Temple/Shrine</string>
     <string name="buddha">Buddha</string>

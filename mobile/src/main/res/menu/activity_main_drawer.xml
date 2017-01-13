@@ -4,29 +4,29 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_near"
-            android:icon="@drawable/ic_action_location_2"
+            android:icon="@drawable/ic_my_location_black_24dp"
             android:title="@string/near" />
 
         <item
             android:id="@+id/nav_temple_shrine"
-            android:icon="@drawable/torii"
+            android:icon="@drawable/ic_torii"
             android:title="@string/temple_shrine"/>
         <item
             android:id="@+id/nav_buddha"
-            android:icon="@drawable/daibutsu"
+            android:icon="@drawable/ic_buddha"
             android:title="@string/buddha"/>
         <item
             android:id="@+id/nav_historical_interest_site"
-            android:icon="@drawable/ikusa"
+            android:icon="@drawable/ic_ikusa"
             android:title="@string/historical_interest_site"/>
         <item
             android:id="@+id/nav_beach"
-            android:icon="@drawable/beach"
+            android:icon="@drawable/ic_beach"
             android:title="@string/beach"/>
 
         <item
             android:id="@+id/nav_history"
-            android:icon="@drawable/ic_action_foursquare"
+            android:icon="@drawable/ic_beenhere_black_24dp"
             android:title="@string/log" />
     </group>
 
