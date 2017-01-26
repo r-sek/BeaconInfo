@@ -19,11 +19,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnFragmentInteractionListener {
+
+    TextView uuidTxt;
+    TextView majorTxt;
+    TextView minorTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,14 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        uuidTxt = (TextView)findViewById(R.id.uuidTxt);
+        majorTxt = (TextView)findViewById(R.id.majorTxt);
+        minorTxt = (TextView)findViewById(R.id.minorTxt);
+
+        uuidTxt.setText("standby");
+        majorTxt.setText("standby");
+        minorTxt.setText("standby");
+
         final BluetoothManager bluetoothManager = (BluetoothManager)getSystemService(Context.BLUETOOTH_SERVICE);
         BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
         mBluetoothAdapter.startLeScan(mLeScanCallback);
@@ -47,6 +61,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+        String uuid;
+        String major;
+        String minor;
+
         @Override
         public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
 
@@ -56,32 +74,34 @@ public class MainActivity extends AppCompatActivity
                 if((scanRecord[5] == (byte)0x4c) && (scanRecord[6] == (byte)0x00) &&
                         (scanRecord[7] == (byte)0x02) && (scanRecord[8] == (byte)0x15))
                 {
-                    String uuid = IntToHex2(scanRecord[9] & 0xff)
-                            + IntToHex2(scanRecord[10] & 0xff)
-                            + IntToHex2(scanRecord[11] & 0xff)
-                            + IntToHex2(scanRecord[12] & 0xff)
-                            + "-"
-                            + IntToHex2(scanRecord[13] & 0xff)
-                            + IntToHex2(scanRecord[14] & 0xff)
-                            + "-"
-                            + IntToHex2(scanRecord[15] & 0xff)
-                            + IntToHex2(scanRecord[16] & 0xff)
-                            + "-"
-                            + IntToHex2(scanRecord[17] & 0xff)
-                            + IntToHex2(scanRecord[18] & 0xff)
-                            + "-"
-                            + IntToHex2(scanRecord[19] & 0xff)
-                            + IntToHex2(scanRecord[20] & 0xff)
-                            + IntToHex2(scanRecord[21] & 0xff)
-                            + IntToHex2(scanRecord[22] & 0xff)
-                            + IntToHex2(scanRecord[23] & 0xff)
-                            + IntToHex2(scanRecord[24] & 0xff);
+                    uuid = IntToHex2(scanRecord[9] & 0xff)
+                        + IntToHex2(scanRecord[10] & 0xff)
+                        + IntToHex2(scanRecord[11] & 0xff)
+                        + IntToHex2(scanRecord[12] & 0xff)
+                        + "-"
+                        + IntToHex2(scanRecord[13] & 0xff)
+                        + IntToHex2(scanRecord[14] & 0xff)
+                        + "-"
+                        + IntToHex2(scanRecord[15] & 0xff)
+                        + IntToHex2(scanRecord[16] & 0xff)
+                        + "-"
+                        + IntToHex2(scanRecord[17] & 0xff)
+                        + IntToHex2(scanRecord[18] & 0xff)
+                        + "-"
+                        + IntToHex2(scanRecord[19] & 0xff)
+                        + IntToHex2(scanRecord[20] & 0xff)
+                        + IntToHex2(scanRecord[21] & 0xff)
+                        + IntToHex2(scanRecord[22] & 0xff)
+                        + IntToHex2(scanRecord[23] & 0xff)
+                        + IntToHex2(scanRecord[24] & 0xff);
 
-                    String major = IntToHex2(scanRecord[25] & 0xff) + IntToHex2(scanRecord[26] & 0xff);
-                    String minor = IntToHex2(scanRecord[27] & 0xff) + IntToHex2(scanRecord[28] & 0xff);
+                    major = IntToHex2(scanRecord[25] & 0xff) + IntToHex2(scanRecord[26] & 0xff);
+                    minor = IntToHex2(scanRecord[27] & 0xff) + IntToHex2(scanRecord[28] & 0xff);
                 }
             }
-
+            uuidTxt.setText(uuid);
+            majorTxt.setText(major);
+            minorTxt.setText(minor);
         }
     };
 
