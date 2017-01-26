@@ -1,11 +1,8 @@
 package info.redspirit.beaconinfo;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -22,14 +19,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Map;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.Identifier;
+import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.Region;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnFragmentInteractionListener {
+        implements BeaconConsumer, NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnFragmentInteractionListener {
 
     TextView uuidTxt;
     TextView majorTxt;
     TextView minorTxt;
+
+    private static final String IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24";
+    private static final String UUID = "00000000-5F80-1001-B000-001C4DB646D9";
+    private BeaconManager beaconManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,64 +59,55 @@ public class MainActivity extends AppCompatActivity
         majorTxt.setText("standby");
         minorTxt.setText("standby");
 
-        final BluetoothManager bluetoothManager = (BluetoothManager)getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
-        mBluetoothAdapter.startLeScan(mLeScanCallback);
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        beaconManager = BeaconManager.getInstanceForApplication(this);
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));
+
     }
 
-    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-        String uuid;
-        String major;
-        String minor;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // サービスの開始
+        beaconManager.bind(this);
+    }
 
-        @Override
-        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // サービスの停止
+        beaconManager.unbind(this);
+    }
 
-            if(scanRecord.length > 30)
-            {
-                //iBeacon の場合 6 byte 目から、 9 byte 目はこの値に固定されている。
-                if((scanRecord[5] == (byte)0x4c) && (scanRecord[6] == (byte)0x00) &&
-                        (scanRecord[7] == (byte)0x02) && (scanRecord[8] == (byte)0x15))
-                {
-                    uuid = IntToHex2(scanRecord[9] & 0xff)
-                        + IntToHex2(scanRecord[10] & 0xff)
-                        + IntToHex2(scanRecord[11] & 0xff)
-                        + IntToHex2(scanRecord[12] & 0xff)
-                        + "-"
-                        + IntToHex2(scanRecord[13] & 0xff)
-                        + IntToHex2(scanRecord[14] & 0xff)
-                        + "-"
-                        + IntToHex2(scanRecord[15] & 0xff)
-                        + IntToHex2(scanRecord[16] & 0xff)
-                        + "-"
-                        + IntToHex2(scanRecord[17] & 0xff)
-                        + IntToHex2(scanRecord[18] & 0xff)
-                        + "-"
-                        + IntToHex2(scanRecord[19] & 0xff)
-                        + IntToHex2(scanRecord[20] & 0xff)
-                        + IntToHex2(scanRecord[21] & 0xff)
-                        + IntToHex2(scanRecord[22] & 0xff)
-                        + IntToHex2(scanRecord[23] & 0xff)
-                        + IntToHex2(scanRecord[24] & 0xff);
+    @Override
+    public void onBeaconServiceConnect() {
+        Identifier uuid = Identifier.parse(UUID);
+        Region mRegion = new Region("unique-id-001", uuid, null, null);
 
-                    major = IntToHex2(scanRecord[25] & 0xff) + IntToHex2(scanRecord[26] & 0xff);
-                    minor = IntToHex2(scanRecord[27] & 0xff) + IntToHex2(scanRecord[28] & 0xff);
-                }
+        beaconManager.addMonitorNotifier(new MonitorNotifier() {
+            @Override
+            public void didEnterRegion(Region region) {
+                // 領域侵入
             }
-            uuidTxt.setText(uuid);
-            majorTxt.setText(major);
-            minorTxt.setText(minor);
-        }
-    };
 
-    //intデータを 2桁16進数に変換するメソッド
-    public String IntToHex2(int i) {
-        char hex_2[] = {Character.forDigit((i>>4) & 0x0f,16),Character.forDigit(i&0x0f, 16)};
-        String hex_2_str = new String(hex_2);
-        return hex_2_str.toUpperCase();
+            @Override
+            public void didExitRegion(Region region) {
+                // 領域退出
+            }
+
+            @Override
+            public void didDetermineStateForRegion(int i, Region region) {
+                // 領域に対する状態が変化
+            }
+        });
+
+        try {
+            beaconManager.startMonitoringBeaconsInRegion(mRegion);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
