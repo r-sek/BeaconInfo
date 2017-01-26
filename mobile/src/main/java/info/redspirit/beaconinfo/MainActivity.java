@@ -27,13 +27,12 @@ import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.Region;
 
 public class MainActivity extends AppCompatActivity
-        implements BeaconConsumer, NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnFragmentInteractionListener {
+        implements BeaconConsumer, NavigationView.OnNavigationItemSelectedListener, TopFragment.OnFragmentInteractionListener, ItemFragment.OnFragmentInteractionListener {
 
-    TextView uuidTxt;
-    TextView majorTxt;
-    TextView minorTxt;
 
+    //iBeacon検知対応
     private static final String IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24";
+    //利用するBeaconのUUID(固定)※全て同一
     private static final String UUID = "00000000-5F80-1001-B000-001C4DB646D9";
     private BeaconManager beaconManager;
 
@@ -42,6 +41,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(savedInstanceState == null){
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().add(R.id.container, new TopFragment()).commit();
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -51,13 +55,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        uuidTxt = (TextView)findViewById(R.id.uuidTxt);
-        majorTxt = (TextView)findViewById(R.id.majorTxt);
-        minorTxt = (TextView)findViewById(R.id.minorTxt);
 
-        uuidTxt.setText("standby");
-        majorTxt.setText("standby");
-        minorTxt.setText("standby");
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
