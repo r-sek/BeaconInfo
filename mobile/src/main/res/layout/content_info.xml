@@ -23,7 +23,7 @@
         android:text="Infomation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView4"
+        android:id="@+id/placeNameTxt"
         android:layout_below="@+id/InfoMainImage"
         android:layout_alignParentStart="true"
         android:textAppearance="@android:style/TextAppearance.Material.Medium" />
@@ -32,9 +32,9 @@
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView4"
+        android:layout_below="@+id/placeNameTxt"
         android:layout_alignParentStart="true"
-        android:id="@+id/textView9" />
+        android:id="@+id/infoTxt" />
 
     <Button
         android:text="@string/visit"
