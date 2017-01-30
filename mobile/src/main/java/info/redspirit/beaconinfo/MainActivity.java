@@ -1,11 +1,13 @@
 package info.redspirit.beaconinfo;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,12 +21,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
+
+import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity
         implements BeaconConsumer, NavigationView.OnNavigationItemSelectedListener, TopFragment.OnFragmentInteractionListener, ItemFragment.OnFragmentInteractionListener {
@@ -41,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().add(R.id.container, new TopFragment()).commit();
         }
@@ -54,7 +60,6 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -82,30 +87,49 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBeaconServiceConnect() {
         Identifier uuid = Identifier.parse(UUID);
-        Region mRegion = new Region("unique-id-001", uuid, null, null);
+        final Region mRegion = new Region("unique-id-001", uuid, null, null);
 
         beaconManager.addMonitorNotifier(new MonitorNotifier() {
             @Override
             public void didEnterRegion(Region region) {
                 // 領域侵入
+                try {
+                    // レンジング開始
+                    beaconManager.startRangingBeaconsInRegion(mRegion);
+                } catch (RemoteException e) {
+                    // 例外が発生した場合
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void didExitRegion(Region region) {
                 // 領域退出
+                try {
+                    //レンジングの停止
+                    beaconManager.stopRangingBeaconsInRegion(mRegion);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void didDetermineStateForRegion(int i, Region region) {
                 // 領域に対する状態が変化
+
             }
         });
 
-        try {
-            beaconManager.startMonitoringBeaconsInRegion(mRegion);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        beaconManager.addRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                Intent intent = new Intent(MainActivity.this,BeaconInfoActivity.class);
+                for(Beacon beacon : beacons) {
+                // ログの出力
+                    Log.d("Beacon", "UUID:" + beacon.getId1() + ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
+                }
+            }
+        });
     }
 
     @Override

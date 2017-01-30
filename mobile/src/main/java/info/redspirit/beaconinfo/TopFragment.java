@@ -1,9 +1,12 @@
 package info.redspirit.beaconinfo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +14,16 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.Identifier;
+import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.RangeNotifier;
+import org.altbeacon.beacon.Region;
+
+import java.util.Collection;
 
 import static info.redspirit.beaconinfo.R.id.container;
 import static info.redspirit.beaconinfo.R.id.top;
@@ -25,7 +37,7 @@ import static info.redspirit.beaconinfo.R.id.top;
  * Use the {@link TopFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TopFragment extends Fragment {
+public class TopFragment extends Fragment implements BeaconConsumer {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -77,6 +89,9 @@ public class TopFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        beaconManager = BeaconManager.getInstanceForApplication(getActivity());
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));
     }
 
     @Override
@@ -94,6 +109,67 @@ public class TopFragment extends Fragment {
         minorTxt.setText("standby");
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // サービスの開始
+        beaconManager.bind(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // サービスの停止
+        beaconManager.unbind(this);
+    }
+
+    @Override
+    public void onBeaconServiceConnect() {
+        Identifier uuid = Identifier.parse(UUID);
+        final Region mRegion = new Region("unique-id-001", uuid, null, null);
+
+        beaconManager.addMonitorNotifier(new MonitorNotifier() {
+            @Override
+            public void didEnterRegion(Region region) {
+                // 領域侵入
+                try {
+                    // レンジング開始
+                    beaconManager.startRangingBeaconsInRegion(mRegion);
+                } catch (RemoteException e) {
+                    // 例外が発生した場合
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void didExitRegion(Region region) {
+                // 領域退出
+                try {
+                    //レンジングの停止
+                    beaconManager.stopRangingBeaconsInRegion(mRegion);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void didDetermineStateForRegion(int i, Region region) {
+                // 領域に対する状態が変化
+
+            }
+        });
+
+        beaconManager.addRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                for(Beacon beacon : beacons) {
+                    // ログの出力
+                    Log.d("Beacon", "UUID:" + beacon.getId1() + ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
+                }
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -7,12 +7,14 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <!--対応していない機種にインストールされないようにuser-futureを設定する-->
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
-    <!--Android 6.0でBLEを使うのに位置情報のパーミッションが必要-->
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- 対応していない機種にインストールされないようにuser-futureを設定する -->
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+    <!-- Android 6.0でBLEを使うのに位置情報のパーミッションが必要 -->
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -42,7 +44,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".BeaconInfoActivity"
+            android:label="@string/title_activity_beacon_info"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
