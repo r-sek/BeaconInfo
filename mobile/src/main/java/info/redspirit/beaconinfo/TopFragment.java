@@ -2,6 +2,7 @@ package info.redspirit.beaconinfo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -99,7 +100,11 @@ public class TopFragment extends Fragment implements BeaconConsumer {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_top, container, false);
+        return v;
+    }
 
+    @Override
+    public void onStart() {
         uuidTxt = (TextView)v.findViewById(R.id.uuidTxt);
         majorTxt = (TextView)v.findViewById(R.id.majorTxt);
         minorTxt = (TextView)v.findViewById(R.id.minorTxt);
@@ -108,8 +113,10 @@ public class TopFragment extends Fragment implements BeaconConsumer {
         majorTxt.setText("standby");
         minorTxt.setText("standby");
 
-        return v;
+
+        super.onStart();
     }
+
 
     @Override
     public void onResume() {
@@ -170,6 +177,22 @@ public class TopFragment extends Fragment implements BeaconConsumer {
                 }
             }
         });
+    }
+
+    @Override
+    public Context getApplicationContext() {
+        //return null;
+        return getContext();
+    }
+
+    @Override
+    public void unbindService(ServiceConnection serviceConnection) {
+
+    }
+
+    @Override
+    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
+        return false;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

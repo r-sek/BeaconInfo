@@ -73,7 +73,7 @@ public class ItemFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_item, container, false);
 
-        return inflater.inflate(R.layout.fragment_item, container, false);
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
