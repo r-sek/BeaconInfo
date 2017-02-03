@@ -1,7 +1,9 @@
 package info.redspirit.beaconinfo;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.design.widget.FloatingActionButton;
@@ -41,10 +43,8 @@ public class MainActivity extends AppCompatActivity
     //利用するBeaconのUUID(固定)※全て同一
     private static final String UUID = "00000000-5F80-1001-B000-001C4DB646D9";
     private BeaconManager beaconManager;
-
-    TextView uuidTxt;
-    TextView majorTxt;
-    TextView minorTxt;
+    //6.0以上ロケーションアクセス許可
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
 
 
     @Override
@@ -69,13 +69,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        uuidTxt = (TextView)findViewById(R.id.uuidTxt);
-        majorTxt = (TextView)findViewById(R.id.majorTxt);
-        minorTxt = (TextView)findViewById(R.id.minorTxt);
 
-        uuidTxt.setText("standby");
-        majorTxt.setText("standby");
-        minorTxt.setText("standby");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},PERMISSION_REQUEST_COARSE_LOCATION);
+            }
+        }
 
         beaconManager = BeaconManager.getInstanceForApplication(this);
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));
@@ -130,15 +129,22 @@ public class MainActivity extends AppCompatActivity
                 // 領域に対する状態が変化
 
             }
+
         });
+
+        try{
+            beaconManager.startMonitoringBeaconsInRegion(mRegion);
+        }catch (RemoteException e){
+            e.printStackTrace();
+        }
 
         beaconManager.addRangeNotifier(new RangeNotifier() {
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                Intent intent = new Intent(MainActivity.this,BeaconInfoActivity.class);
+                //検出したビーコンの情報
                 for(Beacon beacon : beacons) {
-                // ログの出力
-                    Log.d("Beacon", "UUID:" + beacon.getId1() + ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
+                    // ログの出力
+                    Log.d("Beacon", "UUID:" + beacon.getId1() +  ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
                 }
             }
         });

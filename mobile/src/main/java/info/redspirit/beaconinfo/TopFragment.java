@@ -3,7 +3,9 @@ package info.redspirit.beaconinfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
@@ -38,7 +40,10 @@ import static info.redspirit.beaconinfo.R.id.top;
  * Use the {@link TopFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TopFragment extends Fragment implements BeaconConsumer {
+
+//TODO:Beaconを利用する場合はBeaconConsumerをimplementsすること
+
+public class TopFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -91,6 +96,10 @@ public class TopFragment extends Fragment implements BeaconConsumer {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
+//        beaconManager = BeaconManager.getInstanceForApplication(getActivity());
+//        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));
+
     }
 
     @Override
@@ -111,9 +120,6 @@ public class TopFragment extends Fragment implements BeaconConsumer {
         majorTxt.setText("standby");
         minorTxt.setText("standby");
 
-        beaconManager = BeaconManager.getInstanceForApplication(getActivity());
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));
-
         super.onStart();
     }
 
@@ -122,82 +128,86 @@ public class TopFragment extends Fragment implements BeaconConsumer {
     public void onResume() {
         super.onResume();
         // サービスの開始
-        beaconManager.bind(this);
+        //beaconManager.bind(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         // サービスの停止
-        beaconManager.unbind(this);
+        //beaconManager.unbind(this);
     }
 
-    @Override
-    public void onBeaconServiceConnect() {
-        Identifier uuid = Identifier.parse(UUID);
-        final Region mRegion = new Region("unique-id-001", uuid, null, null);
+//    @Override
+//    public void onBeaconServiceConnect() {
+//        Identifier uuid = Identifier.parse(UUID);
+//        final Region mRegion = new Region("unique-id-001", null, null, null);
+//
+//        beaconManager.addMonitorNotifier(new MonitorNotifier() {
+//            @Override
+//            public void didEnterRegion(Region region) {
+//                // 領域侵入
+//                try {
+//                    // レンジング開始
+//                    beaconManager.startRangingBeaconsInRegion(mRegion);
+//                } catch (RemoteException e) {
+//                    // 例外が発生した場合
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void didExitRegion(Region region) {
+//                // 領域退出
+//                try {
+//                    //レンジングの停止
+//                    beaconManager.stopRangingBeaconsInRegion(mRegion);
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void didDetermineStateForRegion(int i, Region region) {
+//                // 領域に対する状態が変化
+//
+//            }
+//
+//        });
+//
+//        try{
+//            beaconManager.startMonitoringBeaconsInRegion(mRegion);
+//        }catch (RemoteException e){
+//            e.printStackTrace();
+//        }
+//
+//        beaconManager.addRangeNotifier(new RangeNotifier() {
+//            @Override
+//            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+//                //検出したビーコンの情報
+//                for(Beacon beacon : beacons) {
+//                    // ログの出力
+//                    Log.d("Beacon", "UUID:" + beacon.getId1() +  ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
+//                }
+//            }
+//        });
+//    }
 
-        beaconManager.addMonitorNotifier(new MonitorNotifier() {
-            @Override
-            public void didEnterRegion(Region region) {
-                // 領域侵入
-                try {
-                    // レンジング開始
-                    beaconManager.startRangingBeaconsInRegion(mRegion);
-                } catch (RemoteException e) {
-                    // 例外が発生した場合
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void didExitRegion(Region region) {
-                // 領域退出
-                try {
-                    //レンジングの停止
-                    beaconManager.stopRangingBeaconsInRegion(mRegion);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void didDetermineStateForRegion(int i, Region region) {
-                // 領域に対する状態が変化
-
-            }
-        });
-
-        beaconManager.addRangeNotifier(new RangeNotifier() {
-            @Override
-            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                //検出したビーコンの情報
-                for(Beacon beacon : beacons) {
-                    // ログの出力
-                    Log.d("Beacon", "UUID:" + beacon.getId1() +  ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
-                    uuidTxt.setText(beacon.getId1().toString());
-                    majorTxt.setText(beacon.getId2().toString());
-                    minorTxt.setText(beacon.getId3().toString());
-                }
-            }
-        });
-    }
-
-    @Override
-    public Context getApplicationContext() {
-        //return null;
-        return getContext();
-    }
-
-    @Override
-    public void unbindService(ServiceConnection serviceConnection) {
-
-    }
-
-    @Override
-    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
-        return false;
-    }
+//    @Override
+//    public Context getApplicationContext() {
+//        //return null;
+//        return getContext();
+//    }
+//
+//    @Override
+//    public void unbindService(ServiceConnection serviceConnection) {
+//
+//    }
+//
+//    @Override
+//    public boolean bindService(Intent intent, ServiceConnection serviceConnection, int i) {
+//        return false;
+//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
