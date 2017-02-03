@@ -174,6 +174,9 @@ public class TopFragment extends Fragment implements BeaconConsumer {
                 for(Beacon beacon : beacons) {
                     // ログの出力
                     Log.d("Beacon", "UUID:" + beacon.getId1() + ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
+                    uuidTxt.setText(beacon.getId1().toString());
+                    majorTxt.setText(beacon.getId2().toString());
+                    minorTxt.setText(beacon.getId3().toString());
                 }
             }
         });
