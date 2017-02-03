@@ -42,6 +42,10 @@ public class MainActivity extends AppCompatActivity
     private static final String UUID = "00000000-5F80-1001-B000-001C4DB646D9";
     private BeaconManager beaconManager;
 
+    TextView uuidTxt;
+    TextView majorTxt;
+    TextView minorTxt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,14 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        uuidTxt = (TextView)findViewById(R.id.uuidTxt);
+        majorTxt = (TextView)findViewById(R.id.majorTxt);
+        minorTxt = (TextView)findViewById(R.id.minorTxt);
+
+        uuidTxt.setText("standby");
+        majorTxt.setText("standby");
+        minorTxt.setText("standby");
 
         beaconManager = BeaconManager.getInstanceForApplication(this);
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));

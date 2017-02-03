@@ -103,9 +103,9 @@ public class TopFragment extends Fragment implements BeaconConsumer {
 
     @Override
     public void onStart() {
-        uuidTxt = (TextView)v.findViewById(R.id.uuidTxt);
-        majorTxt = (TextView)v.findViewById(R.id.majorTxt);
-        minorTxt = (TextView)v.findViewById(R.id.minorTxt);
+        uuidTxt = (TextView)getActivity().findViewById(R.id.uuidTxt);
+        majorTxt = (TextView)getActivity().findViewById(R.id.majorTxt);
+        minorTxt = (TextView)getActivity().findViewById(R.id.minorTxt);
 
         uuidTxt.setText("standby");
         majorTxt.setText("standby");
@@ -171,6 +171,7 @@ public class TopFragment extends Fragment implements BeaconConsumer {
         beaconManager.addRangeNotifier(new RangeNotifier() {
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                //検出したビーコンの情報
                 for(Beacon beacon : beacons) {
                     // ログの出力
                     Log.d("Beacon", "UUID:" + beacon.getId1() +  ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
