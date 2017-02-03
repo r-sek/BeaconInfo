@@ -91,8 +91,6 @@ public class TopFragment extends Fragment implements BeaconConsumer {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        beaconManager = BeaconManager.getInstanceForApplication(getActivity());
-        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));
     }
 
     @Override
@@ -113,6 +111,8 @@ public class TopFragment extends Fragment implements BeaconConsumer {
         majorTxt.setText("standby");
         minorTxt.setText("standby");
 
+        beaconManager = BeaconManager.getInstanceForApplication(getActivity());
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));
 
         super.onStart();
     }
@@ -173,7 +173,7 @@ public class TopFragment extends Fragment implements BeaconConsumer {
             public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
                 for(Beacon beacon : beacons) {
                     // ログの出力
-                    Log.d("Beacon", "UUID:" + beacon.getId1() + ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
+                    Log.d("Beacon", "UUID:" + beacon.getId1() +  ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
                     uuidTxt.setText(beacon.getId1().toString());
                     majorTxt.setText(beacon.getId2().toString());
                     minorTxt.setText(beacon.getId3().toString());
