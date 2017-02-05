@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity
                 });
 
                 try {
+                    //ビーコン情報の監視を開始
                     beaconManager.startMonitoringBeaconsInRegion(mRegion);
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity
                             Log.d("Beacon", "UUID:" + beacon.getId1() + ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
                             final String bName = beacon.getBluetoothName();
 
-                            //UI操作はここに記述
+                            //UIスレッドでのUI操作はここに記述
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
