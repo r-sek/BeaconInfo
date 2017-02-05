@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},PERMISSION_REQUEST_COARSE_LOCATION);
+                requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
             }
         }
 
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity
         Identifier uuid = Identifier.parse(UUID);
         final Region mRegion = new Region("unique-id-001", uuid, null, null);
 
+        //スレッド立ち上げ
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -136,9 +137,9 @@ public class MainActivity extends AppCompatActivity
 
                 });
 
-                try{
+                try {
                     beaconManager.startMonitoringBeaconsInRegion(mRegion);
-                }catch (RemoteException e){
+                } catch (RemoteException e) {
                     e.printStackTrace();
                 }
 
@@ -146,14 +147,16 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
                         //検出したビーコンの情報
-                        for(Beacon beacon : beacons) {
+                        for (Beacon beacon : beacons) {
                             // ログの出力
-                            Log.d("Beacon", "UUID:" + beacon.getId1() +  ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
+                            Log.d("Beacon", "UUID:" + beacon.getId1() + ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
                             final String bName = beacon.getBluetoothName();
+
+                            //UI操作はここに記述
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(MainActivity.this,"Beaconを検知"+bName,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "Beaconを検知" + bName, Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
