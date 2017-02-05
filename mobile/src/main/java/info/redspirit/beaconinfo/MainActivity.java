@@ -97,57 +97,72 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBeaconServiceConnect() {
+
         Identifier uuid = Identifier.parse(UUID);
         final Region mRegion = new Region("unique-id-001", uuid, null, null);
 
-        beaconManager.addMonitorNotifier(new MonitorNotifier() {
+        new Thread(new Runnable() {
             @Override
-            public void didEnterRegion(Region region) {
-                // 領域侵入
-                try {
-                    // レンジング開始
-                    beaconManager.startRangingBeaconsInRegion(mRegion);
-                } catch (RemoteException e) {
-                    // 例外が発生した場合
+            public void run() {
+                beaconManager.addMonitorNotifier(new MonitorNotifier() {
+                    @Override
+                    public void didEnterRegion(Region region) {
+                        // 領域侵入
+                        try {
+                            // レンジング開始
+                            beaconManager.startRangingBeaconsInRegion(mRegion);
+                        } catch (RemoteException e) {
+                            // 例外が発生した場合
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void didExitRegion(Region region) {
+                        // 領域退出
+                        try {
+                            //レンジングの停止
+                            beaconManager.stopRangingBeaconsInRegion(mRegion);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void didDetermineStateForRegion(int i, Region region) {
+                        // 領域に対する状態が変化
+
+                    }
+
+                });
+
+                try{
+                    beaconManager.startMonitoringBeaconsInRegion(mRegion);
+                }catch (RemoteException e){
                     e.printStackTrace();
                 }
+
+                beaconManager.addRangeNotifier(new RangeNotifier() {
+                    @Override
+                    public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                        //検出したビーコンの情報
+                        for(Beacon beacon : beacons) {
+                            // ログの出力
+                            Log.d("Beacon", "UUID:" + beacon.getId1() +  ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
+                            final String bName = beacon.getBluetoothName();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this,"Beaconを検知"+bName,Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
+                });
             }
+        }).start();
 
-            @Override
-            public void didExitRegion(Region region) {
-                // 領域退出
-                try {
-                    //レンジングの停止
-                    beaconManager.stopRangingBeaconsInRegion(mRegion);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
 
-            @Override
-            public void didDetermineStateForRegion(int i, Region region) {
-                // 領域に対する状態が変化
-
-            }
-
-        });
-
-        try{
-            beaconManager.startMonitoringBeaconsInRegion(mRegion);
-        }catch (RemoteException e){
-            e.printStackTrace();
-        }
-
-        beaconManager.addRangeNotifier(new RangeNotifier() {
-            @Override
-            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                //検出したビーコンの情報
-                for(Beacon beacon : beacons) {
-                    // ログの出力
-                    Log.d("Beacon", "UUID:" + beacon.getId1() +  ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
-                }
-            }
-        });
     }
 
     @Override
