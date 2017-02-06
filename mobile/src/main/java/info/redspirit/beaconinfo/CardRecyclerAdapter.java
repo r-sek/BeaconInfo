@@ -16,7 +16,7 @@ import android.widget.Toast;
  * Created by rj on 2017/01/20.
  */
 
-public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapter.ViewHolder>{
+public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapter.ViewHolder> {
     private String[] list;
     private Context context;
 
@@ -24,7 +24,7 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
     private Activity mActivity;
     private View v;
 
-    public CardRecyclerAdapter(Context context,String[] stringArray) {
+    public CardRecyclerAdapter(Context context, String[] stringArray) {
         super();
         this.list = stringArray;
         this.context = context;
@@ -42,14 +42,14 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
         vh.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,list[position],Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, list[position], Toast.LENGTH_SHORT).show();
                 infoView();
             }
         });
     }
 
-    protected void infoView(){
-        Intent intent = new Intent(context,InfoActivity.class);
+    protected void infoView() {
+        Intent intent = new Intent(context, InfoActivity.class);
         context.startActivity(intent);
     }
 
@@ -68,9 +68,9 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
 
         public ViewHolder(View v) {
             super(v);
-            textView_main = (TextView)v.findViewById(R.id.textView_main);
-            layout = (LinearLayout)v.findViewById(R.id.layout);
-            imageView = (ImageView)v.findViewById(R.id.imageView);
+            textView_main = (TextView) v.findViewById(R.id.textView_main);
+            layout = (LinearLayout) v.findViewById(R.id.layout);
+            imageView = (ImageView) v.findViewById(R.id.imageView);
         }
     }
 }

@@ -2,11 +2,8 @@ package info.redspirit.beaconinfo;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.altbeacon.beacon.BeaconManager;
@@ -31,16 +28,16 @@ public class BeaconService extends Service {
 
     private final IBinder mBinder = new BeaconServiceBinder();
 
-    public class BeaconServiceBinder extends Binder{
+    public class BeaconServiceBinder extends Binder {
         //BeaconService自身を返す
-        BeaconService getService(){
+        BeaconService getService() {
             return BeaconService.this;
         }
     }
 
     @Override
     public void onCreate() {
-        Log.i(SERVICE_NAME,"Service Enable");
+        Log.i(SERVICE_NAME, "Service Enable");
 
 
         beaconManager = BeaconManager.getInstanceForApplication(this);
@@ -56,7 +53,7 @@ public class BeaconService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.i(SERVICE_NAME,"Service Disable");
+        Log.i(SERVICE_NAME, "Service Disable");
         super.onDestroy();
     }
 

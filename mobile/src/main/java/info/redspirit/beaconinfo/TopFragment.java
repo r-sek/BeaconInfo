@@ -1,35 +1,15 @@
 package info.redspirit.beaconinfo;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.altbeacon.beacon.Beacon;
-import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
-import org.altbeacon.beacon.BeaconParser;
-import org.altbeacon.beacon.Identifier;
-import org.altbeacon.beacon.MonitorNotifier;
-import org.altbeacon.beacon.RangeNotifier;
-import org.altbeacon.beacon.Region;
-
-import java.util.Collection;
-
-import static info.redspirit.beaconinfo.R.id.container;
-import static info.redspirit.beaconinfo.R.id.top;
 
 
 /**
@@ -112,9 +92,9 @@ public class TopFragment extends Fragment {
 
     @Override
     public void onStart() {
-        uuidTxt = (TextView)getActivity().findViewById(R.id.uuidTxt);
-        majorTxt = (TextView)getActivity().findViewById(R.id.majorTxt);
-        minorTxt = (TextView)getActivity().findViewById(R.id.minorTxt);
+        uuidTxt = (TextView) getActivity().findViewById(R.id.uuidTxt);
+        majorTxt = (TextView) getActivity().findViewById(R.id.majorTxt);
+        minorTxt = (TextView) getActivity().findViewById(R.id.minorTxt);
 
         uuidTxt.setText("standby");
         majorTxt.setText("standby");

@@ -1,15 +1,9 @@
 package info.redspirit.beaconinfo;
 
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,8 +12,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import static android.R.attr.priority;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -44,23 +36,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // 測位の精度、消費電力の優先度
         locationPriority = priority[1];
 
-        if(locationPriority == priority[0]){
+        if (locationPriority == priority[0]) {
             // 位置情報の精度を優先する場合
             locationRequest.setPriority(locationPriority);
             locationRequest.setInterval(5000);
             locationRequest.setFastestInterval(16);
-        }
-        else if(locationPriority == priority[1]){
+        } else if (locationPriority == priority[1]) {
             // 消費電力を考慮する場合
             locationRequest.setPriority(locationPriority);
             locationRequest.setInterval(60000);
             locationRequest.setFastestInterval(16);
-        }
-        else if(locationPriority == priority[2]){
+        } else if (locationPriority == priority[2]) {
             // "city" level accuracy
             locationRequest.setPriority(locationPriority);
-        }
-        else{
+        } else {
             // 外部からのトリガーでの測位のみ
             locationRequest.setPriority(locationPriority);
         }
@@ -115,7 +104,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
     */
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
