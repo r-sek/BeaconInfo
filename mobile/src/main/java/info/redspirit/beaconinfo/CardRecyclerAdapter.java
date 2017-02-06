@@ -38,11 +38,6 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
     @Override
     public void onBindViewHolder(ViewHolder vh, final int position) {
         vh.textView_main.setText(list[position]);
-        if(position != list.length){
-            vh.textView_sub.setText("次:"+list[position+1]);
-        }else {
-            vh.textView_sub.setText("次:"+list[position]);
-        }
         vh.imageView.setImageResource(R.mipmap.ic_launcher);
         vh.layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,14 +63,12 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView_main;
-        TextView textView_sub;
         LinearLayout layout;
         ImageView imageView;
 
         public ViewHolder(View v) {
             super(v);
             textView_main = (TextView)v.findViewById(R.id.textView_main);
-            textView_sub = (TextView)v.findViewById(R.id.textView_sub);
             layout = (LinearLayout)v.findViewById(R.id.layout);
             imageView = (ImageView)v.findViewById(R.id.imageView);
         }

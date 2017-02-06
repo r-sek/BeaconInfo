@@ -47,18 +47,6 @@
                     android:textSize="@dimen/view_cardview_textsize_main" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView_sub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:gravity="center"
-                android:paddingBottom="@dimen/view_cardview_padding_topbottom"
-                android:paddingLeft="@dimen/view_cardview_padding_leftright"
-                android:paddingRight="@dimen/view_cardview_padding_leftright"
-                android:paddingTop="@dimen/view_cardview_padding_topbottom"
-                android:textSize="@dimen/view_cardview_textsize_sub" />
-
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
