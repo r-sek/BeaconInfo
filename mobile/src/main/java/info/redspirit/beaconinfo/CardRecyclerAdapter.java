@@ -38,7 +38,7 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
     @Override
     public void onBindViewHolder(ViewHolder vh, final int position) {
         vh.textView_main.setText(list[position]);
-        vh.imageView.setImageResource(R.mipmap.ic_launcher);
+        vh.imageView.setImageResource(R.mipmap.ic_place_white);
         vh.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
