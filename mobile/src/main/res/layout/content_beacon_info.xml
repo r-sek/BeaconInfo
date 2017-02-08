@@ -14,11 +14,12 @@
     tools:showIn="@layout/activity_beacon_info">
 
     <ImageView
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         app:srcCompat="@drawable/app_sampleimg"
         android:id="@+id/imageView2"
+        android:layout_height="140dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_height="140dp" />
+        android:scaleType="fitStart" />
 
 </RelativeLayout>

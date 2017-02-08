@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "44060385855",
+    "project_id": "robotic-weft-157903"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44060385855:android:372b27c66cc1cfac",
+        "android_client_info": {
+          "package_name": "info.redspirit.beaconinfo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "44060385855-n444pab692frj0dkjenphms9fh1ffdsh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2-paNMXouTV5p2L8h5Y3Ylc4qmwAxbIA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
