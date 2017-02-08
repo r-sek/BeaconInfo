@@ -77,6 +77,13 @@
         <item>沖縄県</item>
     </string-array>
 
+    <string-array name="spinner">
+        <item id="d">車</item>
+        <item id="r">電車</item>
+        <item id="w">徒歩</item>
+        <item id="w">相乗りサービス</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

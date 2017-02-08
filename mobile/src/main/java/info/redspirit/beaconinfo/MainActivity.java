@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity
                             Log.d("Beacon", "UUID:" + beacon.getId1() + ", Name:" + beacon.getBluetoothName() + ", major:" + beacon.getId2() + ", minor:" + beacon.getId3() + ", Distance:" + beacon.getDistance() + ",RSSI" + beacon.getRssi());
                             final String bName = beacon.getBluetoothName();
 
-                            //UIスレッドでのUI操作はここに記述
+                            //UIスレッドでのUI操作
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
