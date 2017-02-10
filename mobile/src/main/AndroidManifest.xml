@@ -49,6 +49,10 @@
             android:name=".BeaconInfoActivity"
             android:label="@string/title_activity_beacon_info"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RouteActivity"
+            android:label="@string/title_activity_route"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -89,5 +89,6 @@
     <string name="title_activity_guide">GuideActivity</string>
     <string name="title_activity_beacon_info">BeaconInfoActivity</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_route">RouteActivity</string>
 
 </resources>
