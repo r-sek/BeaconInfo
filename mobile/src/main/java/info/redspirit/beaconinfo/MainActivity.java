@@ -206,7 +206,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        if (id == R.id.nav_near) {
+        if (id == R.id.nav_all) {
+            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+        } else if (id == R.id.nav_near){
             fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
         } else if (id == R.id.nav_temple_shrine) {
             fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();

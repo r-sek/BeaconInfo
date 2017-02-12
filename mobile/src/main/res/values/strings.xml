@@ -12,6 +12,7 @@
     <string name="def_card_main">SpotName</string>
     <string name="def_card_sub">Category</string>
 
+    <string name="all_show">All</string>
     <string name="temple_shrine">Temple/Shrine</string>
     <string name="buddha">Buddha</string>
     <string name="historical_interest_site">Historical/Interest</string>

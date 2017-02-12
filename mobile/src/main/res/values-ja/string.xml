@@ -13,6 +13,7 @@
     <string name="def_card_main">スポット名</string>
     <string name="def_card_sub">カテゴリ</string>
 
+    <string name="all_show">全件表示</string>
     <string name="temple_shrine">寺院/神社</string>
     <string name="buddha">仏像</string>
     <string name="historical_interest_site">史跡/名所</string>
