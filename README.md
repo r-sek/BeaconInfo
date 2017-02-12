@@ -1,5 +1,5 @@
 # BeaconInfo
-### 観光地案内(GPS+iBeacon)アプリ
+観光地案内(GPS+iBeacon)アプリ
 
 ## 仕様
 * Android5.0以上
