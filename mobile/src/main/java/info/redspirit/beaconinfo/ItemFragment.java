@@ -100,7 +100,6 @@ public class ItemFragment extends Fragment {
         Log.i("fragment","onStart");
         HttpResponsAsync hra = new HttpResponsAsync();
         crv = (CardRecyclerView)v.findViewById(R.id.cardRecyclerView1);
-        crv.setRecyclerAdapter(getContext());
         global = (Global) getActivity().getApplication();
 
         for(int i=0;i<global.testArray.size();i++){
