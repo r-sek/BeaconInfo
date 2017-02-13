@@ -1,7 +1,10 @@
 package info.redspirit.beaconinfo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -16,33 +19,22 @@ import java.net.URL;
  * Created by rj on 2017/02/13.
  */
 
-public class HttpResponsAsync extends AsyncTask<String, Integer, JSONObject> {
+public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
 
     public String process;
     public String sort;
-    public String strUrl;
     HttpURLConnection con = null;
     URL url = null;
-    InputStream in;
-    JSONObject jo;
+    JSONArray ja;
 
     @Override
     protected void onPreExecute() {
-        if(process.equals("list")){
-            strUrl = "http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/listprocess.php";
-        }else if(process.equals("info")){
-            strUrl = "http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/infoprocess.php";
-        }else if(process.equals("beacon")){
-            strUrl = "http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/beaconinfoprocess.php";
-        }else{
-            strUrl = "http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/listprocess.php";
-        }
 
         super.onPreExecute();
     }
 
     @Override
-    protected JSONObject doInBackground(String... strUrl) {
+    protected JSONArray doInBackground(String... strUrl) {
         try {
             // URLの作成
             url = new URL(strUrl[0]);
@@ -59,56 +51,39 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONObject> {
             // 接続
             con.connect();
 
-            try
-            {
-                in.close();
-            }catch(Exception e){
-                e.printStackTrace();
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"UTF-8"));
+            String line = null;
+            StringBuilder sb = new StringBuilder();
+
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
             }
 
+            br.close();
+            ja = new JSONArray(sb.toString());
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null;
+        return ja;
     }
 
-//    @Override
-//    protected JSONObject doInBackground(String URL) {
-//
-//        try {
-//            // URLの作成
-//            url = new URL(strUrl);
-//            // 接続用HttpURLConnectionオブジェクト作成
-//            con = (HttpURLConnection)url.openConnection();
-//            // リクエストメソッドの設定
-//            con.setRequestMethod("GET");
-//            // リダイレクトを自動で許可しない設定
-//            con.setInstanceFollowRedirects(false);
-//            // URL接続からデータを読み取る場合はtrue
-//            con.setDoInput(true);
-//            // URL接続にデータを書き込む場合はtrue
-//            con.setDoOutput(true);
-//
-//            // 接続
-//            con.connect();
-//
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
-
     @Override
-    protected void onPostExecute(JSONObject o) {
+    protected void onPostExecute(JSONArray ja) {
+        try {
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject eventObj = ja.getJSONObject(i);
+                String id = eventObj.getString("id");
+                String name = eventObj.getString("name");
 
-        super.onPostExecute(o);
+            }
+        }catch (Exception e){
+
+        }
+
+
+        super.onPostExecute(ja);
     }
 
 

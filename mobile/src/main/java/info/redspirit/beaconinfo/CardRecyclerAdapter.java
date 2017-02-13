@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * Created by rj on 2017/01/20.
  */
@@ -23,10 +25,17 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
     //アクティビティ取得
     private Activity mActivity;
     private View v;
+    Global global;
 
-    public CardRecyclerAdapter(Context context, String[] stringArray) {
+//    public CardRecyclerAdapter(Context context, String[] stringArray) {
+//        super();
+//        this.list = stringArray;
+//        this.context = context;
+//    }
+
+
+    public CardRecyclerAdapter(Context context) {
         super();
-        this.list = stringArray;
         this.context = context;
     }
 
@@ -58,6 +67,10 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View v = layoutInflater.inflate(R.layout.layout_recycler, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
+        global = (Global) mActivity.getApplication();
+        for(int i=0; i<global.nameArray.size();i++){
+            list[i] = global.nameArray.get(i);
+        }
         return viewHolder;
     }
 

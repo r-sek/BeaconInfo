@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +33,8 @@ public class ItemFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private View v;
+
+    Global global;
 
     public ItemFragment() {
         // Required empty public constructor
@@ -61,6 +66,7 @@ public class ItemFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        global = (Global) getActivity().getApplication();
     }
 
     @Override
@@ -70,6 +76,27 @@ public class ItemFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_item, container, false);
 
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        HttpResponsAsync hra = new HttpResponsAsync();
+
+        JSONArray ja = hra.doInBackground("http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/listprocess.php");
+
+        try {
+            for (int i = 0; i < ja.length(); i++) {
+                JSONObject eventObj = ja.getJSONObject(i);
+                String id = eventObj.getString("id");
+                String name = eventObj.getString("name");
+                global.idArray.add(Integer.parseInt(id));
+                global.nameArray.add(name);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        super.onStart();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

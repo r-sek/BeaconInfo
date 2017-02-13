@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity
     private BeaconManager beaconManager;
     //6.0以上ロケーションアクセス許可
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    Global global;
+
 
 
     @Override
@@ -59,6 +61,10 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        //グローバル変数を取得
+        global = (Global) this.getApplication();
+        //初期化
+        global.GlobalAllInit();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
