@@ -36,12 +36,10 @@ public class MainActivity extends AppCompatActivity
     private static final String IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24";
     //利用するBeaconのUUID(固定)※全て同一
     private static final String UUID = "00000000-5F80-1001-B000-001C4DB646D9";
-    private BeaconManager beaconManager;
     //6.0以上ロケーションアクセス許可
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     Global global;
-
-
+    private BeaconManager beaconManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +59,14 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        //グローバル変数を取得
+        //Applicationクラス取得
         global = (Global) this.getApplication();
         //初期化
         global.GlobalAllInit();
+
+        for(int i=0;i<global.testArray.size();i++){
+            Log.i("list",global.testArray.get(i));
+        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

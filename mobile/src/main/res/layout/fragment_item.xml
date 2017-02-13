@@ -1,20 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="info.redspirit.beaconinfo.ItemFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/item_title"
-        android:id="@+id/textView3"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:text="@string/item_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <!--
     <ScrollView
@@ -28,6 +28,7 @@
     -->
 
     <info.redspirit.beaconinfo.CardRecyclerView
+        android:id="@+id/cardRecyclerView1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"

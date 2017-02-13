@@ -24,20 +24,21 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
 
     //アクティビティ取得
     private Activity mActivity;
+    private LayoutInflater mLayoutInflater;
     private View v;
-    Global global;
 
-//    public CardRecyclerAdapter(Context context, String[] stringArray) {
-//        super();
-//        this.list = stringArray;
-//        this.context = context;
-//    }
-
-
-    public CardRecyclerAdapter(Context context) {
+    public CardRecyclerAdapter(Context context, String[] stringArray) {
         super();
+        this.list = stringArray;
         this.context = context;
     }
+
+
+//    public CardRecyclerAdapter(Context context) {
+//        super();
+//        mLayoutInflater = LayoutInflater.from(context);
+//        this.context = context;
+//    }
 
     @Override
     public int getItemCount() {
@@ -67,10 +68,10 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View v = layoutInflater.inflate(R.layout.layout_recycler, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
-        global = (Global) mActivity.getApplication();
-        for(int i=0; i<global.nameArray.size();i++){
-            list[i] = global.nameArray.get(i);
-        }
+//        global = (Global) mActivity.getApplication();
+//        for(int i=0; i<global.nameArray.size();i++){
+//            list[i] = global.nameArray.get(i);
+//        }
         return viewHolder;
     }
 

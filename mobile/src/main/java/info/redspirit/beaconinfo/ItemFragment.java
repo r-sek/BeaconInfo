@@ -3,13 +3,17 @@ package info.redspirit.beaconinfo;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 /**
@@ -26,15 +30,14 @@ public class ItemFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    Global global;
+    CardRecyclerView crv;
+    CardRecyclerAdapter crva;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
     private View v;
-
-    Global global;
 
     public ItemFragment() {
         // Required empty public constructor
@@ -66,21 +69,43 @@ public class ItemFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        global = (Global) getActivity().getApplication();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_item, container, false);
+        final Handler handler = new Handler();
+        final LayoutInflater fInrlater = inflater;
+        final ViewGroup fcontainer = container;
 
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        v = fInrlater.inflate(R.layout.fragment_item, fcontainer, false);
+//                    }
+//                });
+//            }
+//        });
+
+        v = fInrlater.inflate(R.layout.fragment_item, fcontainer, false);
         return v;
     }
 
     @Override
     public void onStart() {
+        Log.i("fragment","onStart");
         HttpResponsAsync hra = new HttpResponsAsync();
+        crv = (CardRecyclerView)v.findViewById(R.id.cardRecyclerView1);
+        crv.setRecyclerAdapter(getContext());
+        global = (Global) getActivity().getApplication();
+
+        for(int i=0;i<global.testArray.size();i++){
+            Log.i("list",global.testArray.get(i));
+        }
 
         JSONArray ja = hra.doInBackground("http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/listprocess.php");
 
@@ -94,6 +119,12 @@ public class ItemFragment extends Fragment {
             }
         }catch (Exception e){
             e.printStackTrace();
+        }
+
+        if(global.nameArray.size() != 0){
+            crv.setRecyclerAdapterB(getContext(),global.nameArray);
+        }else{
+            crv.setRecyclerAdapterB(getContext(),global.testArray);
         }
 
         super.onStart();
