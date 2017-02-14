@@ -98,27 +98,44 @@ public class ItemFragment extends Fragment {
     @Override
     public void onStart() {
         Log.i("fragment","onStart");
-        HttpResponsAsync hra = new HttpResponsAsync();
         crv = (CardRecyclerView)v.findViewById(R.id.cardRecyclerView1);
         global = (Global) getActivity().getApplication();
+        HttpResponsAsync hra = new HttpResponsAsync(new AsyncCallback() {
+            @Override
+            public void onPreExecute() {
 
-        for(int i=0;i<global.testArray.size();i++){
-            Log.i("list",global.testArray.get(i));
-        }
-
-        JSONArray ja = hra.doInBackground("http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/listprocess.php");
-
-        try {
-            for (int i = 0; i < ja.length(); i++) {
-                JSONObject eventObj = ja.getJSONObject(i);
-                String id = eventObj.getString("id");
-                String name = eventObj.getString("name");
-                global.idArray.add(Integer.parseInt(id));
-                global.nameArray.add(name);
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onPostExecute(JSONArray ja) {
+
+                try {
+                    for (int i = 0; i < ja.length(); i++) {
+                        JSONObject eventObj = ja.getJSONObject(i);
+                        String id = eventObj.getString("id");
+                        String name = eventObj.getString("name");
+                        global.idArray.add(Integer.parseInt(id));
+                        global.nameArray.add(name);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                Log.i("ArraySize",String.valueOf(global.nameArray.size()));
+
+            }
+
+            @Override
+            public void onProgressUpdate(int progress) {
+
+            }
+
+            @Override
+            public void onCancelled() {
+
+            }
+        });
+        hra.execute("http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/listprocess.php");
 
         if(global.nameArray.size() != 0){
             crv.setRecyclerAdapterB(getContext(),global.nameArray);
