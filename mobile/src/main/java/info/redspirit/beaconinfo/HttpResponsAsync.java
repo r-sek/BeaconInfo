@@ -33,8 +33,8 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
 
     @Override
     protected void onPreExecute() {
-
         super.onPreExecute();
+        this._asyncCallback.onPreExecute();
     }
 
     @Override
