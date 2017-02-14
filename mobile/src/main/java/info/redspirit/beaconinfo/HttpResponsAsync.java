@@ -2,6 +2,7 @@ package info.redspirit.beaconinfo;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
@@ -23,6 +24,7 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
 
     public String process;
     public String sort;
+    public String lang;
     HttpURLConnection con = null;
     URL url = null;
     JSONArray ja;
@@ -41,13 +43,16 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
             // 接続用HttpURLConnectionオブジェクト作成
             con = (HttpURLConnection)url.openConnection();
             // リクエストメソッドの設定
-            con.setRequestMethod("GET");
+            con.setRequestMethod("POST");
             // リダイレクトを自動で許可しない設定
             con.setInstanceFollowRedirects(false);
             // URL接続からデータを読み取る場合はtrue
             con.setDoInput(true);
             // URL接続にデータを書き込む場合はtrue
             con.setDoOutput(true);
+
+
+
             // 接続
             con.connect();
 
@@ -102,5 +107,13 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
 
     public void setSort(String sort) {
         this.sort = sort;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 }
