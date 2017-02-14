@@ -43,7 +43,7 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
             // 接続用HttpURLConnectionオブジェクト作成
             con = (HttpURLConnection)url.openConnection();
             // リクエストメソッドの設定
-            con.setRequestMethod("POST");
+            con.setRequestMethod("GET");
             // リダイレクトを自動で許可しない設定
             con.setInstanceFollowRedirects(false);
             // URL接続からデータを読み取る場合はtrue
