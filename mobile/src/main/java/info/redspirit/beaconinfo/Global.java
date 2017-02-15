@@ -19,6 +19,7 @@ public class Global extends Application {
         idArray = new ArrayList<Integer>();
         testArray = new ArrayList<String>();
 
+        testArray.add("↓Dummy↓");
         testArray.add("仏日庵");
         testArray.add("東慶寺");
         testArray.add("浄智寺");
@@ -29,6 +30,7 @@ public class Global extends Application {
         testArray.add("来迎寺");
         testArray.add("覚園寺");
         testArray.add("瑞泉寺");
+        testArray.add("↑Dummy↑");
 
     }
 

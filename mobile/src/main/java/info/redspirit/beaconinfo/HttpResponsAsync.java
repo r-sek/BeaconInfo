@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,18 +22,19 @@ import java.net.URL;
  */
 
 public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
-
-    public String process;
-    public String sort;
-    public String lang;
     HttpURLConnection con = null;
     URL url = null;
-    JSONArray ja;
+    private AsyncCallback _asyncCallback = null;
+
+
+    public HttpResponsAsync(AsyncCallback _asyncCallback) {
+        this._asyncCallback = _asyncCallback;
+    }
 
     @Override
     protected void onPreExecute() {
-
         super.onPreExecute();
+        this._asyncCallback.onPreExecute();
     }
 
     @Override
@@ -43,7 +45,7 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
             // 接続用HttpURLConnectionオブジェクト作成
             con = (HttpURLConnection)url.openConnection();
             // リクエストメソッドの設定
-            con.setRequestMethod("POST");
+            con.setRequestMethod("GET");
             // リダイレクトを自動で許可しない設定
             con.setInstanceFollowRedirects(false);
             // URL接続からデータを読み取る場合はtrue
@@ -55,6 +57,7 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
 
             // 接続
             con.connect();
+            Log.i("CONNECTION","now");
 
             BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(),"UTF-8"));
             String line = null;
@@ -65,55 +68,18 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
             }
 
             br.close();
-            ja = new JSONArray(sb.toString());
+            return new JSONArray(sb.toString());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return ja;
+        return null;
     }
 
     @Override
     protected void onPostExecute(JSONArray ja) {
-        try {
-            for (int i = 0; i < ja.length(); i++) {
-                JSONObject eventObj = ja.getJSONObject(i);
-                String id = eventObj.getString("id");
-                String name = eventObj.getString("name");
-
-            }
-        }catch (Exception e){
-
-        }
-
-
         super.onPostExecute(ja);
-    }
-
-
-
-    public String getProcess() {
-        return process;
-    }
-
-    public void setProcess(String process) {
-        this.process = process;
-    }
-
-    public String getSort() {
-        return sort;
-    }
-
-    public void setSort(String sort) {
-        this.sort = sort;
-    }
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
+        this._asyncCallback.onPostExecute(ja);
     }
 }
