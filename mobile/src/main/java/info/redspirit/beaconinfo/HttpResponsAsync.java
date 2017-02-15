@@ -54,6 +54,12 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
             con.setDoOutput(true);
 
 
+            ///////////setいるのかよくわからない
+            con.setInstanceFollowRedirects(false);
+            con.setRequestProperty("Accept-Language", "jp");
+            con.setDoInput(true);
+            con.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            //////////////////////////////////
 
             // 接続
             con.connect();
@@ -68,6 +74,9 @@ public class HttpResponsAsync extends AsyncTask<String, Integer, JSONArray> {
             }
 
             br.close();
+            Log.i("StringBuilder",sb.toString());
+//            JSONObject jo = new JSONObject(sb.toString());
+
             return new JSONArray(sb.toString());
 
         } catch (Exception e) {
