@@ -82,18 +82,6 @@ public class ItemFragment extends Fragment {
         final LayoutInflater fInrlater = inflater;
         final ViewGroup fcontainer = container;
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                handler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        v = fInrlater.inflate(R.layout.fragment_item, fcontainer, false);
-//                    }
-//                });
-//            }
-//        });
-
         v = fInrlater.inflate(R.layout.fragment_item, fcontainer, false);
         return v;
     }

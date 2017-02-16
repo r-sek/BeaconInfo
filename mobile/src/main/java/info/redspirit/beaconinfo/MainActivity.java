@@ -65,10 +65,6 @@ public class MainActivity extends AppCompatActivity
         //初期化
         global.GlobalAllInit();
 
-        for(int i=0;i<global.testArray.size();i++){
-            Log.i("list",global.testArray.get(i));
-        }
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
