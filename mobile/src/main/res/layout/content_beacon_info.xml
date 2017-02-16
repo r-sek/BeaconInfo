@@ -13,13 +13,31 @@
     tools:context="info.redspirit.beaconinfo.BeaconInfoActivity"
     tools:showIn="@layout/activity_beacon_info">
 
-    <ImageView
-        android:layout_width="match_parent"
-        app:srcCompat="@drawable/app_sampleimg"
-        android:id="@+id/imageView2"
-        android:layout_height="140dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:scaleType="fitStart" />
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:text="Infomation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/infoNameTxt"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/iTxt"
+            android:layout_alignParentStart="true"
+            android:id="@+id/infoTxt"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
 </RelativeLayout>
