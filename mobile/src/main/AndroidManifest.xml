@@ -13,11 +13,9 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
-    <!-- 位置情報関連パーミッション -->
-    <!-- Android 6.0でBLEとFusedLocationProviderApiを使うのに位置情報のパーミッションが必要 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- インターネット通信の許可 -->
+    <!-- 位置情報、ネットワーク通信のパーミッション -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application

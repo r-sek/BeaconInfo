@@ -29,6 +29,7 @@
     <string name="info">詳細情報</string>
 
     <string name="gps_caution">位置情報へのアクセスを許可してください</string>
+    <string name="exception_caution">例外が発生</string>
 
     <string-array name="dummy">
         <item>仏日庵</item>

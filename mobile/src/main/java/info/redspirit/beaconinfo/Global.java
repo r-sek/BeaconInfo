@@ -14,6 +14,7 @@ public class Global extends Application {
     ArrayList<Integer>idArray;
     ArrayList<String>testArray;
     ArrayList<Integer>testIdArray;
+    boolean gpsFlg;
 
     public void GlobalAllInit() {
         nameArray = new ArrayList<String>();
@@ -32,6 +33,8 @@ public class Global extends Application {
         testArray.add("覚園寺");
         testArray.add("瑞泉寺");
         testArray.add("↑Dummy↑");
+
+        gpsFlg = true;
 
     }
 

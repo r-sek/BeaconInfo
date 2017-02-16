@@ -1,6 +1,7 @@
 package info.redspirit.beaconinfo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -8,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -26,12 +28,24 @@ import android.Manifest;
 import android.widget.Toast;
 
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 public class InfoActivity extends AppCompatActivity implements LocationListener {
 
+    private static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
+    private static final int MinTime = 1000;
+    private static final float MinDistance = 50;
     ImageView iv;
     TextView placeNameTxt;
     TextView infoTxt;
@@ -42,15 +56,16 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
     private String id;
     private String latitude;
     private String longitude;
-    private Double nowLatitude;
-    private Double nowLongitude;
+    private Double nowLat;
+    private Double nowLng;
+    private String nowLatitude;
+    private String nowLongitude;
     private String imageUrl;
     private String name;
     private String info;
-
-
-    private LocationManager locationManager;
     private ProgressDialog waitDialog;
+    //GPS用
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +83,6 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
 
         Intent intent = getIntent();
         int getId = intent.getIntExtra("id",1);
-
 
         HttpResponsAsync hra = new HttpResponsAsync(new AsyncCallback() {
             @Override
@@ -112,8 +126,6 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
 
             }
 
-
-
             @Override
             public void onProgressUpdate(int progress) {
 
@@ -145,13 +157,10 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-        //ロケーション取得関連
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-        }
-        else{
-            locationStart();
-        }
+//        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+//        boolean gpsFlg = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//        Log.d("GPS Enabled", gpsFlg?"OK":"NG");
+//        startGPS();
 
         bt = (Button) findViewById(R.id.visitBtn);
         //ボタン
@@ -162,84 +171,83 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-    }
+        if (ActivityCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION)  != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-    private void locationStart(){
-        Log.d("debug","locationStart()");
+            /** fine location のリクエストコード（値は他のパーミッションと被らなければ、なんでも良い）*/
+            final int requestCode = 1;
 
-        // LocationManager インスタンス生成
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        final boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!gpsEnabled) {
-            // GPSを設定するように促す
-            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(settingsIntent);
-            Log.d("debug", "gpsEnable, startActivity");
-        } else {
-            Log.d("debug", "gpsEnabled");
-        }
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-
-            Log.d("debug", "checkSelfPermission false");
+            // いずれも得られていない場合はパーミッションのリクエストを要求する
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, requestCode );
             return;
         }
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 50, this);
-    }
+        // 位置情報を管理している LocationManager のインスタンスを生成する
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        String locationProvider = null;
 
-    // 結果の受け取り
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1000) {
-            // 使用が許可された
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d("debug","checkSelfPermission true");
-
-                locationStart();
-                bt.setEnabled(true);
-                return;
-
-            } else {
-                // それでも拒否された時の対応
-                Toast.makeText(this,"",Toast.LENGTH_SHORT).show();
-                bt.setEnabled(false);
-            }
+        // GPSが利用可能になっているかどうかをチェック
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationProvider = LocationManager.GPS_PROVIDER;
         }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        switch (status) {
-            case LocationProvider.AVAILABLE:
-                Log.d("debug", "LocationProvider.AVAILABLE");
-                break;
-            case LocationProvider.OUT_OF_SERVICE:
-                Log.d("debug", "LocationProvider.OUT_OF_SERVICE");
-                break;
-            case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                Log.d("debug", "LocationProvider.TEMPORARILY_UNAVAILABLE");
-                break;
+        // GPSプロバイダーが有効になっていない場合は基地局情報が利用可能になっているかをチェック
+        else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationProvider = LocationManager.NETWORK_PROVIDER;
         }
+        // いずれも利用可能でない場合は、GPSを設定する画面に遷移する
+        else {
+            Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(settingsIntent);
+            return;
+        }
+
+        /** 位置情報の通知するための最小時間間隔（ミリ秒） */
+        final long minTime = 500;
+        /** 位置情報を通知するための最小距離間隔（メートル）*/
+        final long minDistance = 1;
+
+        // 利用可能なロケーションプロバイダによる位置情報の取得の開始
+        // FIXME 本来であれば、リスナが複数回登録されないようにチェックする必要がある
+        locationManager.requestLocationUpdates(locationProvider, minTime, minDistance, this);
+        // 最新の位置情報
+        Location location = locationManager.getLastKnownLocation(locationProvider);
+
+        try {
+            nowLat = location.getLatitude();
+            nowLng = location.getLongitude();
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("gpsE",String.valueOf(e));
+        }
+
+        Log.d("gps",String.valueOf(nowLat)+String.valueOf(nowLng));
+
     }
 
+    //位置情報が通知されるたびにコールバックされるメソッド
     @Override
-    public void onLocationChanged(Location location) {
-        nowLatitude = location.getLatitude();
-        nowLongitude = location.getLongitude();
-
+    public void onLocationChanged(Location location){
+        nowLat = location.getLatitude();
+        nowLng = location.getLongitude();
+        Log.d("gps",String.valueOf(nowLat)+String.valueOf(nowLng));
     }
 
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
+    //ロケーションプロバイダが利用不可能になるとコールバックされるメソッド
     @Override
     public void onProviderDisabled(String provider) {
+        //ロケーションプロバイダーが使われなくなったらリムーブする必要がある
+    }
 
+    //ロケーションプロバイダが利用可能になるとコールバックされるメソッド
+    @Override
+    public void onProviderEnabled(String provider) {
+        //プロバイダが利用可能になったら呼ばれる
+    }
+
+    //ロケーションステータスが変わるとコールバックされるメソッド
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // 利用可能なプロバイダの利用状態が変化したときに呼ばれる
     }
 
     //TODO:自前マップ実装
@@ -250,13 +258,13 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
 
 
     private void test0() {
-//        String srcLatitude = String.valueOf(nowLatitude);
-//        String srcLongitude = String.valueOf(nowLongitude);
+        String srcLatitude = String.valueOf(nowLat);
+        String srcLongitude = String.valueOf(nowLng);
         String desLatitude = latitude;
         String desLongitude = longitude;
 
-        String start = "新宿駅";
-        String destination = "鶴岡八幡宮";
+//        String start = "新宿駅";
+//        String destination = "鶴岡八幡宮";
         String dir;
 
         // 電車:r
@@ -279,7 +287,7 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
         intent.setAction(Intent.ACTION_VIEW);
         intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
 //        intent.setData(Uri.parse("http://maps.google.com/maps?saddr=" + start + "&daddr=" + destination + "&dirflg=" + dir));
-        intent.setData(Uri.parse("http://maps.google.com/maps?saddr="+String.valueOf(nowLatitude)+","+String.valueOf(nowLongitude)+"&daddr="+desLatitude+","+desLongitude + "&dirflg=" + dir));
+        intent.setData(Uri.parse("http://maps.google.com/maps?saddr="+srcLatitude+","+srcLongitude+"&daddr="+desLatitude+","+desLongitude + "&dirflg=" + dir));
         startActivity(intent);
 
     }
@@ -293,5 +301,4 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
