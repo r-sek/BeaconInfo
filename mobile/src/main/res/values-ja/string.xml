@@ -27,6 +27,7 @@
 
     <string name="action_settings">設定</string>
     <string name="info">詳細情報</string>
+    <string name="recommend">レコメンド</string>
 
     <string name="gps_caution">位置情報へのアクセスを許可してください</string>
     <string name="exception_caution">例外が発生</string>
