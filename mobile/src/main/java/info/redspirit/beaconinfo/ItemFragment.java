@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -91,8 +92,12 @@ public class ItemFragment extends Fragment {
     public void onStart() {
         Log.i("fragment","onStart");
         crv = (CardRecyclerView)v.findViewById(R.id.cardRecyclerView1);
+
+        TextView tv = (TextView)getActivity().findViewById(R.id.sortTxt);
+
         global = (Global) getActivity().getApplication();
         global.GlobalArrayInit();
+
         Bundle bundle = getArguments();
         int sortNum = bundle.getInt("sort");
         Locale locale = Locale.getDefault();
@@ -108,21 +113,35 @@ public class ItemFragment extends Fragment {
         switch(sortNum){
             case 0:
                 url += "?jungle=0";
+                tv.setText(R.string.all_show);
                 break;
             case 1:
                 url += "?jungle=1";
+                tv.setText(R.string.temple_shrine);
                 break;
             case 2:
                 url += "?jungle=2";
+                tv.setText(R.string.buddha);
                 break;
             case 3:
                 url += "?jungle=3";
+                tv.setText(R.string.historical_interest_site);
                 break;
             case 4:
                 url += "?jungle=4";
+                tv.setText(R.string.beach);
+                break;
+            case 10:
+                url += "?jungle=0";
+                tv.setText(R.string.near);
+                break;
+            case 11:
+                url += "?jungle=0";
+                tv.setText(R.string.log);
                 break;
             default:
                 url += "?jungle=0";
+                tv.setText(R.string.all_show);
                 break;
         }
 

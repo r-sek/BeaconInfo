@@ -24,6 +24,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="info">Infomation</string>
+    <string name="recommend">Recommend</string>
     <string name="gps_caution">Please allow access to location information</string>
     <string name="exception_caution">An exception occurs</string>
 
