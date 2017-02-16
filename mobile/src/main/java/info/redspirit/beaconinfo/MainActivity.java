@@ -214,21 +214,44 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         FragmentManager fragmentManager = getSupportFragmentManager();
+        Bundle bundle = new Bundle();
+        ItemFragment itemFragment = new ItemFragment();
 
         if (id == R.id.nav_all) {
-            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+            bundle.putInt("sort",0);
+            itemFragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(R.id.container, itemFragment).commit();
+//            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
         } else if (id == R.id.nav_near){
-            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+            bundle.putInt("sort",10);
+            itemFragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(R.id.container, itemFragment).commit();
+//            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
         } else if (id == R.id.nav_temple_shrine) {
-            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+            bundle.putInt("sort",1);
+            itemFragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(R.id.container, itemFragment).commit();
+//            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
         } else if (id == R.id.nav_buddha) {
-            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+            bundle.putInt("sort",2);
+            itemFragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(R.id.container, itemFragment).commit();
+//            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
         } else if (id == R.id.nav_historical_interest_site) {
-            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+            bundle.putInt("sort",3);
+            itemFragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(R.id.container, itemFragment).commit();
+//            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
         } else if (id == R.id.nav_beach) {
-            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+            bundle.putInt("sort",4);
+            itemFragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(R.id.container, itemFragment).commit();
+//            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
         } else if (id == R.id.nav_history) {
-            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
+            bundle.putInt("sort",11);
+            itemFragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(R.id.container, itemFragment).commit();
+//            fragmentManager.beginTransaction().replace(R.id.container, ItemFragment.newInstance("hoge", "hoge")).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

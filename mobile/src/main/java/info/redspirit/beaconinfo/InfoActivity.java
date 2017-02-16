@@ -28,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 
 public class InfoActivity extends AppCompatActivity implements LocationListener {
@@ -68,6 +69,17 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
 
         Intent intent = getIntent();
         int getId = intent.getIntExtra("id", 1);
+
+        Locale locale = Locale.getDefault();
+        String language = locale.getLanguage();
+        String url;
+
+        if(language.equals("ja")){
+            url = "http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/ja/infoprocess.php?id=" + getId;
+        }else{
+            url = "http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/en/infoprocess.php?id=" + getId;
+        }
+
 
         HttpResponsAsync hra = new HttpResponsAsync(new AsyncCallback() {
             @Override
@@ -123,8 +135,7 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
 
             }
         });
-        hra.execute("http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/infoprocess.php?id=" + getId);
-
+        hra.execute(url);
 
         spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.spinner, android.R.layout.simple_spinner_item);

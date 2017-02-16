@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 /**
@@ -92,6 +93,41 @@ public class ItemFragment extends Fragment {
         crv = (CardRecyclerView)v.findViewById(R.id.cardRecyclerView1);
         global = (Global) getActivity().getApplication();
         global.GlobalArrayInit();
+        Bundle bundle = getArguments();
+        int sortNum = bundle.getInt("sort");
+        Locale locale = Locale.getDefault();
+        String language = locale.getLanguage();
+        String url;
+
+        if(language.equals("ja")){
+            url = "http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/ja/listprocess.php";
+        }else{
+            url = "http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/en/listprocess.php";
+        }
+
+        switch(sortNum){
+            case 0:
+                url += "?jungle=0";
+                break;
+            case 1:
+                url += "?jungle=1";
+                break;
+            case 2:
+                url += "?jungle=2";
+                break;
+            case 3:
+                url += "?jungle=3";
+                break;
+            case 4:
+                url += "?jungle=4";
+                break;
+            default:
+                url += "?jungle=0";
+                break;
+        }
+
+        Log.i("requestUrl",url);
+
         HttpResponsAsync hra = new HttpResponsAsync(new AsyncCallback() {
             @Override
             public void onPreExecute() {
@@ -143,7 +179,7 @@ public class ItemFragment extends Fragment {
 
             }
         });
-        hra.execute("http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/listprocess.php");
+        hra.execute(url);
 
         if(global.nameArray.size() != 0){
             crv.setRecyclerAdapterB(getContext(),global.nameArray,global.idArray);
