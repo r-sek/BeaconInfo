@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -31,14 +32,12 @@ import java.math.BigDecimal;
 
 public class InfoActivity extends AppCompatActivity implements LocationListener {
 
-    private static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
-    private static final int MinTime = 1000;
-    private static final float MinDistance = 50;
     ImageView iv;
     TextView placeNameTxt;
     TextView infoTxt;
     Button bt;
     Spinner spinner;
+    LocationManager locationManager;
     private String process;
     private String[] WORDS;
     private String id;
@@ -52,7 +51,6 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
     private String name;
     private String info;
     private ProgressDialog waitDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,8 +165,10 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
         }
 
         // 位置情報を管理している LocationManager のインスタンスを生成する
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         String locationProvider = null;
+//        Criteria criteria = new Criteria();
+//        locationProvider = locationManager.getBestProvider(criteria, true);
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             // GPSが利用可能になっているかどうかをチェック
@@ -194,16 +194,15 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
         // 最新の位置情報
         Location location = locationManager.getLastKnownLocation(locationProvider);
 
-        try {
-            nowLat = location.getLatitude();
-            nowLng = location.getLongitude();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("gpsE", String.valueOf(e));
-        }
+//        nowLat = location.getLatitude();
+//        nowLng = location.getLongitude();
 
-        Log.i("LocationProvider",String.valueOf(locationProvider));
-        Log.i("GPS", BigDecimal.valueOf(nowLat).toPlainString() +":"+ BigDecimal.valueOf(nowLng).toPlainString());
+        try {
+            Log.i("LocationProvider", String.valueOf(locationProvider));
+//            Log.i("GPS", BigDecimal.valueOf(nowLat).toPlainString() + ":" + BigDecimal.valueOf(nowLng).toPlainString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -283,5 +282,10 @@ public class InfoActivity extends AppCompatActivity implements LocationListener 
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

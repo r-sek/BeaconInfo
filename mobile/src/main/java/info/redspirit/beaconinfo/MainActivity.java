@@ -1,10 +1,8 @@
 package info.redspirit.beaconinfo;
 
-import android.*;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.design.widget.NavigationView;
