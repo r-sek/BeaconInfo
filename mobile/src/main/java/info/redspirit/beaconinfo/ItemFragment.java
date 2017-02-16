@@ -112,8 +112,8 @@ public class ItemFragment extends Fragment {
                 try {
                     for (int i = 0; i < ja.length(); i++) {
                         JSONObject eventObj = ja.getJSONObject(i);
-                        String id = eventObj.getString("id");
-                        String name = eventObj.getString("name");
+                        String id = eventObj.getString("spot_id");
+                        String name = eventObj.getString("spot_name");
                         global.idArray.add(Integer.parseInt(id));
                         global.nameArray.add(name);
                     }
@@ -122,6 +122,11 @@ public class ItemFragment extends Fragment {
                 }
 
                 Log.i("ArraySize",String.valueOf(global.nameArray.size()));
+                if(global.nameArray.size() != 0){
+                    crv.setRecyclerAdapterB(getContext(),global.nameArray);
+                }else{
+                    crv.setRecyclerAdapterB(getContext(),global.testArray);
+                }
 
             }
 
