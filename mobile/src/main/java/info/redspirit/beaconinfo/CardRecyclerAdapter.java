@@ -14,12 +14,15 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static info.redspirit.beaconinfo.R.id.textView_sub;
+
 /**
  * Created by rj on 2017/01/20.
  */
 
 public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapter.ViewHolder> {
     private String[] list;
+    private Integer[] idList;
     private Context context;
 
     //アクティビティ取得
@@ -27,9 +30,10 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
     private LayoutInflater mLayoutInflater;
     private View v;
 
-    public CardRecyclerAdapter(Context context, String[] stringArray) {
+    public CardRecyclerAdapter(Context context, String[] stringArray, Integer[] idArray) {
         super();
         this.list = stringArray;
+        this.idList = idArray;
         this.context = context;
     }
 
@@ -49,17 +53,19 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
     public void onBindViewHolder(ViewHolder vh, final int position) {
         vh.textView_main.setText(list[position]);
         vh.imageView.setImageResource(R.mipmap.ic_place_white);
+        vh.textView_sub.setText("ID: " + String.valueOf(idList[position]));
         vh.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, list[position], Toast.LENGTH_SHORT).show();
-                infoView();
+                Toast.makeText(context, String.valueOf(idList[position]) + ":" + list[position], Toast.LENGTH_SHORT).show();
+                infoView(idList[position]);
             }
         });
     }
 
-    protected void infoView() {
+    protected void infoView(int id) {
         Intent intent = new Intent(context, InfoActivity.class);
+        intent.putExtra("id", id);
         context.startActivity(intent);
     }
 
@@ -68,21 +74,20 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View v = layoutInflater.inflate(R.layout.layout_recycler, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
-//        global = (Global) mActivity.getApplication();
-//        for(int i=0; i<global.nameArray.size();i++){
-//            list[i] = global.nameArray.get(i);
-//        }
+
         return viewHolder;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView_main;
+        TextView textView_sub;
         LinearLayout layout;
         ImageView imageView;
 
         public ViewHolder(View v) {
             super(v);
             textView_main = (TextView) v.findViewById(R.id.textView_main);
+            textView_sub = (TextView) v.findViewById(R.id.textView_sub);
             layout = (LinearLayout) v.findViewById(R.id.layout);
             imageView = (ImageView) v.findViewById(R.id.imageView);
         }

@@ -1,5 +1,7 @@
 package info.redspirit.beaconinfo;
 
+import android.*;
+import android.Manifest;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     //利用するBeaconのUUID(固定)※全て同一
     private static final String UUID = "00000000-5F80-1001-B000-001C4DB646D9";
     //6.0以上ロケーションアクセス許可
+    private static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     Global global;
     private BeaconManager beaconManager;
@@ -75,6 +78,9 @@ public class MainActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+            }
+            if (this.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
             }
         }
 

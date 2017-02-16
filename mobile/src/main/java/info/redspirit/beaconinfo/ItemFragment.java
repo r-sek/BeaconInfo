@@ -1,5 +1,6 @@
 package info.redspirit.beaconinfo;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +38,7 @@ public class ItemFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ProgressDialog waitDialog;
     private OnFragmentInteractionListener mListener;
     private View v;
 
@@ -100,9 +103,19 @@ public class ItemFragment extends Fragment {
         Log.i("fragment","onStart");
         crv = (CardRecyclerView)v.findViewById(R.id.cardRecyclerView1);
         global = (Global) getActivity().getApplication();
+        global.GlobalArrayInit();
         HttpResponsAsync hra = new HttpResponsAsync(new AsyncCallback() {
             @Override
             public void onPreExecute() {
+                // プログレスダイアログの設定
+                waitDialog = new ProgressDialog(getContext());
+                // プログレスダイアログのメッセージを設定します
+                waitDialog.setMessage("NOW LOADING...");
+                // 円スタイル（くるくる回るタイプ）に設定します
+                waitDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                waitDialog.setIndeterminate(true);
+                // プログレスダイアログを表示
+                waitDialog.show();
 
             }
 
@@ -123,10 +136,12 @@ public class ItemFragment extends Fragment {
 
                 Log.i("ArraySize",String.valueOf(global.nameArray.size()));
                 if(global.nameArray.size() != 0){
-                    crv.setRecyclerAdapterB(getContext(),global.nameArray);
+                    crv.setRecyclerAdapterB(getContext(),global.nameArray,global.idArray);
                 }else{
-                    crv.setRecyclerAdapterB(getContext(),global.testArray);
+//                    crv.setRecyclerAdapterB(getContext(),global.testArray);
                 }
+                //プログレスダイアログ消す
+                if (waitDialog.isShowing()){waitDialog.dismiss();}
 
             }
 
@@ -143,12 +158,17 @@ public class ItemFragment extends Fragment {
         hra.execute("http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/listprocess.php");
 
         if(global.nameArray.size() != 0){
-            crv.setRecyclerAdapterB(getContext(),global.nameArray);
+            crv.setRecyclerAdapterB(getContext(),global.nameArray,global.idArray);
         }else{
-            crv.setRecyclerAdapterB(getContext(),global.testArray);
+//                    crv.setRecyclerAdapterB(getContext(),global.testArray);
         }
 
         super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -13,6 +13,7 @@ public class Global extends Application {
     ArrayList<String>nameArray;
     ArrayList<Integer>idArray;
     ArrayList<String>testArray;
+    ArrayList<Integer>testIdArray;
 
     public void GlobalAllInit() {
         nameArray = new ArrayList<String>();
@@ -32,6 +33,11 @@ public class Global extends Application {
         testArray.add("瑞泉寺");
         testArray.add("↑Dummy↑");
 
+    }
+
+    public void GlobalArrayInit(){
+        nameArray = new ArrayList<String>();
+        idArray = new ArrayList<Integer>();
     }
 
 }

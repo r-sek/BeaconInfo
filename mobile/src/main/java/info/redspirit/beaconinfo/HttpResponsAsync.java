@@ -1,5 +1,6 @@
 package info.redspirit.beaconinfo;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;

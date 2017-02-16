@@ -1,5 +1,6 @@
 package info.redspirit.beaconinfo;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import static info.redspirit.beaconinfo.R.id.textView;
 
 public class InfoActivity extends AppCompatActivity {
@@ -25,6 +29,14 @@ public class InfoActivity extends AppCompatActivity {
     Spinner spinner;
     String process;
     String[] WORDS;
+    String id;
+    String latitude;
+    String longitude;
+    String imageUrl;
+    String name;
+    String info;
+
+    private ProgressDialog waitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +51,67 @@ public class InfoActivity extends AppCompatActivity {
         iv = (ImageView) findViewById(R.id.InfoMainImage);
         placeNameTxt = (TextView) findViewById(R.id.placeNameTxt);
         infoTxt = (TextView) findViewById(R.id.infoTxt);
+
+        Intent intent = getIntent();
+        int getId = intent.getIntExtra("id",1);
+
+
+        HttpResponsAsync hra = new HttpResponsAsync(new AsyncCallback() {
+            @Override
+            public void onPreExecute() {
+                // プログレスダイアログの設定
+                waitDialog = new ProgressDialog(InfoActivity.this);
+                // プログレスダイアログのメッセージを設定します
+                waitDialog.setMessage("NOW LOADING...");
+                // 円スタイル（くるくる回るタイプ）に設定します
+                waitDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                waitDialog.setIndeterminate(true);
+                // プログレスダイアログを表示
+                waitDialog.show();
+            }
+
+            @Override
+            public void onPostExecute(JSONArray ja) {
+                try {
+                    for (int i = 0; i < ja.length(); i++) {
+                        JSONObject eventObj = ja.getJSONObject(i);
+                        id = eventObj.getString("spot_id");
+                        latitude = eventObj.getString("latitude");
+                        longitude = eventObj.getString("longitude");
+                        imageUrl = eventObj.getString("image_url");
+                        name = eventObj.getString("spot_name");
+                        info = eventObj.getString("spot_info");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                if(imageUrl.equals("sample")){
+
+                }else{
+
+                }
+                placeNameTxt.setText(name);
+                infoTxt.setText(info);
+
+                if (waitDialog.isShowing()){waitDialog.dismiss();}
+
+            }
+
+
+
+            @Override
+            public void onProgressUpdate(int progress) {
+
+            }
+
+            @Override
+            public void onCancelled() {
+
+            }
+        });
+        hra.execute("http://sample-env-2.3p4ikwvwvd.us-west-2.elasticbeanstalk.com/infoprocess.php?id="+getId);
+
 
         spinner = (Spinner)findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.spinner, android.R.layout.simple_spinner_item);

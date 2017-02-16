@@ -21,21 +21,22 @@ public class CardRecyclerView extends RecyclerView {
     Global global;
     ArrayList<String> array;
     private String[] list;
+    private Integer[] iList;
 
 
     public CardRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setRecyclerAdapter(context);
+//        setRecyclerAdapter(context);
     }
+//
+//    public void setRecyclerAdapter(Context context) {
+//        setLayoutManager(new LinearLayoutManager(context));
+//        setAdapter(new CardRecyclerAdapter(context, list));
+//    }
 
-    public void setRecyclerAdapter(Context context) {
+    public void setRecyclerAdapterB(Context context,ArrayList<String> list,ArrayList<Integer> iList) {
         setLayoutManager(new LinearLayoutManager(context));
-        setAdapter(new CardRecyclerAdapter(context, list));
-    }
-
-    public void setRecyclerAdapterB(Context context,ArrayList<String> list) {
-        setLayoutManager(new LinearLayoutManager(context));
-        setAdapter(new CardRecyclerAdapter(context, list.toArray(new String[list.size()])));
+        setAdapter(new CardRecyclerAdapter(context, list.toArray(new String[list.size()]), iList.toArray(new Integer[iList.size()])));
     }
 
     //listセット

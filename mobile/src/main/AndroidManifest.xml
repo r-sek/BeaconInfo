@@ -13,7 +13,9 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
-    <!-- Android 6.0でBLEを使うのに位置情報のパーミッションが必要 -->
+    <!-- 位置情報関連パーミッション -->
+    <!-- Android 6.0でBLEとFusedLocationProviderApiを使うのに位置情報のパーミッションが必要 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- インターネット通信の許可 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -40,6 +42,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".InfoActivity"
